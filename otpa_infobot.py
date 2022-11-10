@@ -10,7 +10,7 @@ from prettytable import PrettyTable
 import seaborn as sns
 import matplotlib.pyplot as plt
 import telebot
-from token import token
+from my_token import token
 
 warnings.filterwarnings('ignore')
 
