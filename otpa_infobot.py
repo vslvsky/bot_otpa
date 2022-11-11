@@ -110,7 +110,7 @@ def get_dataframe(select_sql) -> dict:
 
 
 def do_chart(*, dataframe: dict, name: str, title: str,y: str ,x: str):
-    color = sns.color_palette('Reds_r', 20)
+    color = sns.color_palette('Reds_r', 23)
 
     sns.set()
     plt.figure()
