@@ -109,42 +109,26 @@ def get_dataframe(select_sql) -> dict:
     return dataframe
 
 
-def do_chart_today():
-    dataframe_today = get_dataframe(select_today)
-    color = sns.color_palette('Reds_r', 25)
+def do_chart(*, dataframe: dict, name: str, title: str,y: str ,x: str):
+    color = sns.color_palette('Reds_r', 20)
 
     sns.set()
     plt.figure()
 
-    ax = sns.barplot(data=dataframe_today, y="closing_user", x="count", palette=color)
-    ax.set_title("Закрытые инциденты за сегодня")
+    ax = sns.barplot(data=dataframe, y=y, x=x, palette=color)
+    ax.set_title(title)
     ax.grid(color='#cccccc')
     ax.set_ylabel(None)
     ax.set_xlabel(None)
     plt.tight_layout()
-    plt.savefig('closing_today.png')
-
-
-def do_chart_1hour():
-    dataframe_1hour = get_dataframe(select_1hours)
-    color = sns.color_palette('Reds_r', 15)
-
-    sns.set()
-    plt.figure()
-
-    ax = sns.barplot(data=dataframe_1hour, y="closing_user", x="count", palette=color)
-    ax.set_title('Закрытые инциденты за 1 час')
-    ax.grid(color='#cccccc')
-    ax.set_ylabel(None)
-    ax.set_xlabel(None)
-    plt.tight_layout()
-    plt.savefig('closing_1hour.png')
+    plt.savefig(f"{name}.png")
 
 
 def main():
 
-    do_chart_today()
-    do_chart_1hour()
+    do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
+    do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
+
 
     photo_today = open('closing_today.png', 'rb')
     photo_1hour = open('closing_1hour.png', 'rb')
