@@ -138,4 +138,9 @@ def main():
     bot.send_photo(chat_id, photo_1hour)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+
+        vb.send_successfully('otpa_infobot')
+    except Exception as exception:  # ZeroDivisionError Exception
+        vb.send_error(exception, 'otpa_infobot')
