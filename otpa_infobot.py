@@ -109,7 +109,9 @@ def get_dataframe(select_sql) -> dict:
     return dataframe
 
 
-def do_chart(*, dataframe: dict, name: str, title: str,y: str ,x: str):
+def do_chart(*, dataframe: dict, name: str, title: str, y: str, x: str) -> object:
+    """Создает столбиковый график из вводных данных, с помощью библиотеки seaborn
+     и затем сохраняет в формате .png с названием 'name.png'"""
     color = sns.color_palette('Reds_r', 23)
 
     sns.set()
@@ -126,21 +128,38 @@ def do_chart(*, dataframe: dict, name: str, title: str,y: str ,x: str):
 
 def main():
 
-    do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
-    do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
+    try:
+        #график "1 час"
+        do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
+        photo_1hour = open('closing_1hour.png', 'rb')
+        bot.send_message(chat_id, f"Информация на {get_datatime()}")
+        bot.send_photo(chat_id, photo_1hour)
+        #график "сегодня"
+        do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
+        photo_today = open('closing_today.png', 'rb')
+        bot.send_photo(chat_id, photo_today)
+    except ValueError:
+        try:
+            #график "сегодня"
+            do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
+            photo_today = open('closing_today.png', 'rb')
+            bot.send_message(chat_id, f"Информация на {get_datatime()}")
+            bot.send_photo(chat_id, photo_today)
+        except ValueError:
+            try:
+                #график "1 час"
+                do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
+                photo_1hour = open('closing_1hour.png', 'rb')
+                bot.send_message(chat_id, f"Информация на {get_datatime()}")
+                bot.send_photo(chat_id, photo_1hour)
+            except ValueError:
+                bot.send_message(chat_id, f"По данным на {get_datatime()} закрытых инцедентов нет")
 
-
-    photo_today = open('closing_today.png', 'rb')
-    photo_1hour = open('closing_1hour.png', 'rb')
-
-    bot.send_message(chat_id, f"Информация на {get_datatime()}")
-    bot.send_photo(chat_id, photo_today)
-    bot.send_photo(chat_id, photo_1hour)
 
 if __name__ == '__main__':
-    try:
-        main()
+    #try:
+    main()
 
-        vb.send_successfully('otpa_infobot')
-    except Exception as exception:  # ZeroDivisionError Exception
-        vb.send_error(exception, 'otpa_infobot')
+    #     vb.send_successfully('otpa_infobot')
+    # except Exception as exception:  # ZeroDivisionError Exception
+    #     vb.send_error(exception, 'otpa_infobot')
