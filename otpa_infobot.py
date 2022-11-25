@@ -6,6 +6,7 @@ import warnings
 import seaborn as sns
 import matplotlib.pyplot as plt
 import telebot
+import time
 
 from my_token import token
 from my_token import chat_id
@@ -133,6 +134,7 @@ def main():
         do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
         photo_1hour = open('closing_1hour.png', 'rb')
         bot.send_message(chat_id, f"Информация на {get_datatime()}")
+        time.sleep(1)
         bot.send_photo(chat_id, photo_1hour)
         #график "сегодня"
         do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
@@ -157,9 +159,10 @@ def main():
 
 
 if __name__ == '__main__':
-    #try:
     main()
-
+    # try:
+    #     main()
+    #
     #     vb.send_successfully('otpa_infobot')
     # except Exception as exception:  # ZeroDivisionError Exception
     #     vb.send_error(exception, 'otpa_infobot')
