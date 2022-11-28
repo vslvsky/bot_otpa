@@ -131,31 +131,29 @@ def main():
 
     try:
         #график "1 час"
-        do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
+        do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title=f"Закрытые инциденты за 1 час\n{get_datatime()}", y="closing_user", x="count")
         photo_1hour = open('closing_1hour.png', 'rb')
-        bot.send_message(chat_id, f"Информация на {get_datatime()}")
-        time.sleep(1)
         bot.send_photo(chat_id, photo_1hour)
         #график "сегодня"
-        do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
+        time.sleep(1)
+        do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
         photo_today = open('closing_today.png', 'rb')
         bot.send_photo(chat_id, photo_today)
     except ValueError:
         try:
             #график "сегодня"
-            do_chart(dataframe=get_dataframe(select_today), name="closing_today", title="Закрытые инциденты за сегодня", y="closing_user", x="count")
+            do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
             photo_today = open('closing_today.png', 'rb')
-            bot.send_message(chat_id, f"Информация на {get_datatime()}")
             bot.send_photo(chat_id, photo_today)
         except ValueError:
             try:
                 #график "1 час"
-                do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title="Закрытые инциденты за 1 час", y="closing_user", x="count")
+                do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title=f"Закрытые инциденты за 1 час\n{get_datatime()}", y="closing_user", x="count")
                 photo_1hour = open('closing_1hour.png', 'rb')
-                bot.send_message(chat_id, f"Информация на {get_datatime()}")
                 bot.send_photo(chat_id, photo_1hour)
             except ValueError:
                 bot.send_message(chat_id, f"По данным на {get_datatime()} закрытых инцедентов нет")
+
 
 
 if __name__ == '__main__':
