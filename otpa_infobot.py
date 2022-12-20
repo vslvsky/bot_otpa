@@ -152,10 +152,12 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-    # try:
-    #     main()
-    #
-    #     vb.send_successfully('otpa_infobot')
-    # except Exception as exception:  # ZeroDivisionError Exception
-    #     vb.send_error(exception, 'otpa_infobot')
+    #main()
+    try:
+        main()
+
+        vb.send_successfully('otpa_infobot')
+    except ConnectionError:
+        pass
+    except Exception as exception:  # ZeroDivisionError Exception
+        vb.send_error(exception, 'otpa_infobot')
