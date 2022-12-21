@@ -1,6 +1,9 @@
 import datetime
 import sys
 from datetime import datetime
+
+import requests
+
 import DataBase as dbase
 import VitalityBooster as vb
 import warnings
@@ -130,25 +133,28 @@ def do_chart(*, dataframe: dict, name: str, title: str, y: str, x: str) -> objec
 
 def main():
 
-    if get_dataframe(select_1hours).empty:
-        if get_dataframe(select_today).empty:
-            bot.send_message(chat_id, f"По данным на {get_datatime()} закрытых инцедентов нет")
-        else:
-            # график "сегодня"
-            time.sleep(1)
-            do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
-            photo_today = open('closing_today.png', 'rb')
-            bot.send_photo(chat_id, photo_today)
-    else:
-        #график "1 час"
-        do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title=f"Закрытые инциденты за 1 час\n{get_datatime()}", y="closing_user", x="count")
-        photo_1hour = open('closing_1hour.png', 'rb')
-        bot.send_photo(chat_id, photo_1hour)
-        #график "сегодня"
-        time.sleep(1)
-        do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
-        photo_today = open('closing_today.png', 'rb')
-        bot.send_photo(chat_id, photo_today)
+    for index in range(5):
+        try:
+            if get_dataframe(select_1hours).empty:
+                if get_dataframe(select_today).empty:
+                    bot.send_message(chat_id, f"По данным на {get_datatime()} закрытых инцедентов нет")
+                else:
+                    # график "сегодня"
+                    do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
+                    photo_today = open('closing_today.png', 'rb')
+                    bot.send_photo(chat_id, photo_today)
+            else:
+                #график "1 час"
+                do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title=f"Закрытые инциденты за 1 час\n{get_datatime()}", y="closing_user", x="count")
+                photo_1hour = open('closing_1hour.png', 'rb')
+                bot.send_photo(chat_id, photo_1hour)
+                #график "сегодня"
+                do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
+                photo_today = open('closing_today.png', 'rb')
+                bot.send_photo(chat_id, photo_today)
+            break
+        except requests.ConnectionError:
+            time.sleep(2)
 
 
 if __name__ == '__main__':
@@ -157,7 +163,7 @@ if __name__ == '__main__':
         main()
 
         vb.send_successfully('otpa_infobot')
-    except ConnectionError:
+    except requests.ConnectionError:
         pass
     except Exception as exception:  # ZeroDivisionError Exception
         vb.send_error(exception, 'otpa_infobot')
