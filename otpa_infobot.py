@@ -136,7 +136,7 @@ def do_chart(*, dataframe: dict, name: str, title: str, y: str, x: str) -> objec
 def main():
 
     try:
-        with open(f"{os.getcwd()}message_history.txt") as json_file:
+        with open(f"{os.getcwd()}/message_history.txt") as json_file:
             message_history = json.load(json_file)
 
         for message in message_history:
@@ -158,7 +158,7 @@ def main():
                 else:
                     # график "сегодня"
                     do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
-                    photo_today = open(f"{os.getcwd()}closing_today.png", 'rb')
+                    photo_today = open(f"{os.getcwd()}/closing_today.png", 'rb')
                     message = bot.send_photo(chat_id, photo_today)
                     message_history.append({
                         'date': get_datatime(),
@@ -167,7 +167,7 @@ def main():
             else:
                 #график "1 час"
                 do_chart(dataframe=get_dataframe(select_1hours), name="closing_1hour", title=f"Закрытые инциденты за 1 час\n{get_datatime()}", y="closing_user", x="count")
-                photo_1hour = open(f"{os.getcwd()}closing_1hour.png", 'rb')
+                photo_1hour = open(f"{os.getcwd()}/closing_1hour.png", 'rb')
                 message = bot.send_photo(chat_id, photo_1hour)
                 message_history.append({
                     'date': get_datatime(),
@@ -175,7 +175,7 @@ def main():
                 })
                 #график "сегодня"
                 do_chart(dataframe=get_dataframe(select_today), name="closing_today", title=f"Закрытые инциденты за сегодня\n{get_datatime()}", y="closing_user", x="count")
-                photo_today = open(f"{os.getcwd()}closing_today.png", 'rb')
+                photo_today = open(f"{os.getcwd()}/closing_today.png", 'rb')
                 message = bot.send_photo(chat_id, photo_today)
                 message_history.append({
                     'date': get_datatime(),
@@ -184,7 +184,7 @@ def main():
             break
         except requests.ConnectionError:
             time.sleep(2)
-    with open(f"{os.getcwd()}message_history.txt", 'w') as outfile:
+    with open(f"{os.getcwd()}/message_history.txt", 'w') as outfile:
         json.dump(message_history, outfile)
 
 
