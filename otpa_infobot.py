@@ -130,7 +130,7 @@ def do_chart(*, dataframe: dict, name: str, title: str, y: str, x: str) -> objec
     ax.set_ylabel(None)
     ax.set_xlabel(None)
     plt.tight_layout()
-    plt.savefig(f"{os.getcwd()}\{name}.png")
+    plt.savefig(f"{os.getcwd()}/{name}.png")
 
 
 def main():
