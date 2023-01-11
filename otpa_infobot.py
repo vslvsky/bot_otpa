@@ -138,9 +138,13 @@ def main():
     try:
         with open(f"{os.getcwd()}/message_history.txt") as json_file:
             message_history = json.load(json_file)
-
-        for message in message_history:
-            bot.delete_message(chat_id, message['id'])
+        for index in range(5):
+            try:
+                for message in message_history:
+                    bot.delete_message(chat_id, message['id'])
+                break
+            except requests.ConnectionError:
+                time.sleep(2)
     except Exception:
         pass
     finally:
